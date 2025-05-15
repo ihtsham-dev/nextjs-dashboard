@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getTodos() {
-  const data = await fetch("https://jsonplaceholder.typicode.com/photos/");
+  const data = await fetch("https://api.vercel.app/blog");
   return data.json();
 }
 export default async function Page() {
@@ -17,12 +17,6 @@ export default async function Page() {
             <p className="text-black" key={todo?.id}>
               {todo?.title}
             </p>
-            <Image
-              src={"/hero-mobile.png"}
-              width={200}
-              height={200}
-              alt={todo?.title}
-            />
           </div>
         </Link>
       ))}

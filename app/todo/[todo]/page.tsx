@@ -1,32 +1,28 @@
-import { Photo } from "@/app/lib/definitions";
-import React, { FC } from "react";
-
-interface Props {
-  params: Promise<{
-    todo: string;
-  }>;
+import type { Metadata, ResolvingMetadata } from 'next'
+ 
+type Props = {
+  params: Promise<{ todo: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
-
-async function getPost(slug: string) {
-  const res = await fetch(
-    `https://jsonplaceholder.typicode.com/photos/${slug}`,
-    {
-      cache: "no-store", // or { next: { revalidate: 60 } }
-    }
-  );
-  return res.json();
-}
-export async function generateMetadata({ params }: Props) {
-  const post = await getPost((await params).todo);
+ 
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const slug = (await params).todo
+ 
+  // fetch post information
+  const post = await fetch(`https://api.vercel.app/blog/${slug}`).then((res) =>
+    res.json()
+  )
+ 
   return {
-    title: post?.title,
-  };
+    title: post.title,
+    description: post.description,
+  }
 }
-const Todo: FC<Props> = async ({ params }) => {
-  const { todo } = await params;
-  const data: Photo = await getPost(todo);
-
-  return <div>Todo:{data?.title}</div>;
-};
-
-export default Todo;
+ 
+export default function Page({ params, searchParams }: Props) {
+  
+  return <div>dsqwd</div>
+}
